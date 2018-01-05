@@ -1,0 +1,33 @@
+//=============================================================================
+//
+// File:         bifurcate/test/fixtures/defines.def
+// Language:     ECMAScript 2015
+// Copyright:    Joe Honton © 2018
+// License:      CC-BY-NC-ND 4.0
+// Initial date: Jan 5, 2018
+// Contents:     #defines used by all test cases
+//
+//=============================================================================
+  
+// test/fixtures/affirmatives.source.js
+#define AFF1						// define without value
+#define AFF3 affirmative three		// define with value
+
+// test/fixtures/negatives.source.js
+#define NEG1						// define without value
+#define NEG3 negative three			// define with value
+
+// test/fixtures/block-comments.source.js
+#define BCM1
+#define BCM2
+#define BCM3
+#define BCM4
+
+// test/fixtures/nested.source.js
+#define NEST1
+#define NEST2
+#define NEST3
+#define NEST4
+#define NEST5
+#define NEST6
+ 

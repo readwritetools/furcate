@@ -1,0 +1,26 @@
+{
+  "name": "bifurcate",
+  "version": "1.0.0",
+  "description": "Bifurcate code files using #defines, <<conditionals>>, and <substitutions>",
+  "private": true,
+  "main": "./dbg/main.class.js",
+  "author": "Joe Honton",
+  "license": "CC-BY-NC-ND 4.0",
+  "scripts": {
+    "build": "npm run exim && npm run app",
+    "exim": "C:/neonave/lib/exim/exim ./src ./dbg main.class.js",
+    "app": "node ./bin/bifurcate ./test/fixtures/affirmatives.source.js ./test/output/affirmatives.dest.js --defs=./test/fixtures/defines.def",
+    "app-inspect": "node --inspect-brk=9229 ./bin/bifurcate ./test/fixtures/affirmatives.source.js ./test/output/affirmatives.dest.js --defs=./test/fixtures/defines.def",
+    "test": "npm run exim && npm run exim-tests && npm run bequiesce-core",
+    "exim-tests": "C:/neonave/lib/exim/exim ./test/cases/src ./test/cases/dbg core.test.js",
+    "bequiesce-core": "C:/neonave/lib/bequiesce/bequiesce ./test/cases/dbg/core.test.js",
+    "failed": "node test/test-case-dump.js",
+    "bump-version": "npm version patch && git push && git push --tags"
+  },
+  "dependencies": {
+    "joezone": "git+ssh://root@nk021:/keep/joezone#*"
+  },
+  "bin": {
+    "fuse": "./bin/bifurcate"
+  }
+}
