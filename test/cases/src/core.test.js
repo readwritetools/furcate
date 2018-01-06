@@ -13,10 +13,6 @@ import {Pfile}				from 'joezone';
 import {Diff}				from 'joezone';
 import Main					from '../../../dbg/main.class.js';
 import FS					from 'fs';
-import {Log}				from 'joezone';
-
-global.log = new Log();
-var term = terminal;
 
 var action;
 var fixtures;

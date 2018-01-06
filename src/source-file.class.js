@@ -14,7 +14,7 @@ import {aver}			from 'joezone';
 import {Pfile}			from 'joezone';
 import {TextReader}		from 'joezone';
 import {TextWriter}		from 'joezone';
-import term				from './terminal.class';
+import terminal			from './terminal.class';
 import Expressions		from './expressions.class';
 
 export default class SourceFile {
@@ -93,7 +93,7 @@ export default class SourceFile {
 			tw.close();
 		}
 		catch(err) {
-			term.abnormal(err.message);
+			terminal.abnormal(err.message);
 		}
 	}
 	
@@ -122,10 +122,7 @@ export default class SourceFile {
 		var regularText = line.substr(this.emitIndex);
 		this.emitText(regularText);
 
-		//term.trace(term.blue(line));
-		var outputLine = this.emitPieces.join('');
-		//term.trace(term.red('['), term.green(outputLine), term.red(']'));
-		return outputLine;
+		return this.emitPieces.join('');
 	}
 	
 	//> line is the full line
@@ -259,7 +256,7 @@ export default class SourceFile {
 		// pop the LIFO stack
 		var stackItem = this.conditionalStack.pop();
 		if (defName != stackItem.defName) {
-			term.abnormal('Mismatched conditional mark: opening name was ', term.red(stackItem.defName), ' but closing name is ', term.red(defName));
+			terminal.abnormal('Mismatched conditional mark: opening name was ', terminal.red(stackItem.defName), ' but closing name is ', terminal.red(defName));
 		}
 
 		// emit any whitespace that occurred before or after the !DEFNAME>>
@@ -303,7 +300,7 @@ export default class SourceFile {
 		// pop the LIFO stack
 		var stackItem = this.conditionalStack.pop();
 		if (defName != stackItem.defName) {
-			term.abnormal('Mismatched conditional mark: opening name was ', term.red(stackItem.defName), ' but closing name is ', term.red(defName));
+			terminal.abnormal('Mismatched conditional mark: opening name was ', terminal.red(stackItem.defName), ' but closing name is ', terminal.red(defName));
 		}
 
 		// emit any whitespace that occurred before or after the DEFNAME>>
@@ -320,7 +317,6 @@ export default class SourceFile {
 		}
 
 		var defName = matchingText.replace('<', '').replace('>', '');
-		//term.trace('substitutionVariable ' + term.yellow(defName));
 		
 		if (this.defsMap.has(defName)) {
 			var defValue = this.defsMap.get(defName);
@@ -331,25 +327,21 @@ export default class SourceFile {
 	}
 	
 	beginBlockComment(matchingText) {
-		//term.trace('beginBlockComment ' + term.yellow(matchingText));
 		this.emitText(matchingText);
 		this.isInsideBlockComment = true;
 	}
 	
 	endBlockComment(matchingText) {
-		//term.trace('endBlockComment ' + term.yellow(matchingText));
 		this.emitText(matchingText);
 		this.isInsideBlockComment = false;
 	}
 	
 	leadingComment(matchingText) {
-		//term.trace('leadingComment ' + term.yellow(matchingText));
 		this.emitText(matchingText);
 	}
 	
 	terminalComment(matchingText) {
 		var actualComment = matchingText.substr(1);	// remove the look-behind
-		//term.trace('terminalComment ' + term.yellow(actualComment));
 		this.emitText(matchingText);
 	}
 }

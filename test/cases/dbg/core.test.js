@@ -13,10 +13,6 @@ var Pfile = require('joezone').Pfile;
 var Diff = require('joezone').Diff;
 var Main = require('../../../dbg/main.class.js');
 var FS = require('fs');
-var Log = require('joezone').Log;
-
-global.log = new Log();
-var term = terminal;
 
 var action;
 var fixtures;

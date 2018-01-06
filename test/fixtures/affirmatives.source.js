@@ -9,7 +9,7 @@
 //
 //=============================================================================
  
-<<AFF1
+<<AFF1 
 class log1 {
 	static trace(msg) {
 		process.stderr.write(`${gray}   [TRACE] ${nocolor}${msg}\n`);

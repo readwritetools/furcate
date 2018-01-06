@@ -13,7 +13,7 @@ import {expect}			from 'joezone';
 import {aver}			from 'joezone';
 import {Pfile}			from 'joezone';
 import {TextReader}		from 'joezone';
-import term				from './terminal.class';
+import terminal			from './terminal.class';
 import Expressions		from './expressions.class';
 
 export default class DefsFile {
@@ -34,7 +34,7 @@ export default class DefsFile {
 			return;
 		
 		if (!defsPfile.exists()) {
-			term.abnormal(`--defs file not found ${defsPfile.name}`);
+			terminal.abnormal(`--defs file not found ${defsPfile.name}`);
 			return;
 		}
 		
@@ -47,7 +47,7 @@ export default class DefsFile {
 			tr.close();
 		}
 		catch(err) {
-			term.abnormal(err.message);
+			terminal.abnormal(err.message);
 		}
 	}
 	
@@ -86,7 +86,7 @@ export default class DefsFile {
 		regexp = new RegExp(this.patterns.define, 'g');
 		result = regexp.exec(line);
 		if (result == null) {
-			term.abnormal('Unhandled item in --defs file ', term.red(line));
+			terminal.abnormal('Unhandled item in --defs file ', terminal.red(line));
 			return [null, null];
 		}
 
@@ -100,7 +100,7 @@ export default class DefsFile {
 			return (match2 == '') ? [match3, ''] : [match2, match3];
 		}
 		
-		term.logic('Expected to find #define in ', term.red(line));
+		terminal.logic('Expected to find #define in ', terminal.red(line));
 		return [null, null];
 	}
 }

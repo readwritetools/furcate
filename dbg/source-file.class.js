@@ -14,7 +14,7 @@ var aver = require('joezone').aver;
 var Pfile = require('joezone').Pfile;
 var TextReader = require('joezone').TextReader;
 var TextWriter = require('joezone').TextWriter;
-var term = require('./terminal.class.js');
+var terminal = require('./terminal.class.js');
 var Expressions = require('./expressions.class.js');
 
 module.exports = class SourceFile {
@@ -93,7 +93,7 @@ module.exports = class SourceFile {
 			tw.close();
 		}
 		catch(err) {
-			term.abnormal(err.message);
+			terminal.abnormal(err.message);
 		}
 	}
 	
@@ -122,10 +122,7 @@ module.exports = class SourceFile {
 		var regularText = line.substr(this.emitIndex);
 		this.emitText(regularText);
 
-		//term.trace(term.blue(line));
-		var outputLine = this.emitPieces.join('');
-		//term.trace(term.red('['), term.green(outputLine), term.red(']'));
-		return outputLine;
+		return this.emitPieces.join('');
 	}
 	
 	//> line is the full line
@@ -259,7 +256,7 @@ module.exports = class SourceFile {
 		// pop the LIFO stack
 		var stackItem = this.conditionalStack.pop();
 		if (defName != stackItem.defName) {
-			term.abnormal('Mismatched conditional mark: opening name was ', term.red(stackItem.defName), ' but closing name is ', term.red(defName));
+			terminal.abnormal('Mismatched conditional mark: opening name was ', terminal.red(stackItem.defName), ' but closing name is ', terminal.red(defName));
 		}
 
 		// emit any whitespace that occurred before or after the !DEFNAME>>
@@ -303,7 +300,7 @@ module.exports = class SourceFile {
 		// pop the LIFO stack
 		var stackItem = this.conditionalStack.pop();
 		if (defName != stackItem.defName) {
-			term.abnormal('Mismatched conditional mark: opening name was ', term.red(stackItem.defName), ' but closing name is ', term.red(defName));
+			terminal.abnormal('Mismatched conditional mark: opening name was ', terminal.red(stackItem.defName), ' but closing name is ', terminal.red(defName));
 		}
 
 		// emit any whitespace that occurred before or after the DEFNAME>>
@@ -320,7 +317,6 @@ module.exports = class SourceFile {
 		}
 
 		var defName = matchingText.replace('<', '').replace('>', '');
-		//term.trace('substitutionVariable ' + term.yellow(defName));
 		
 		if (this.defsMap.has(defName)) {
 			var defValue = this.defsMap.get(defName);
@@ -331,25 +327,21 @@ module.exports = class SourceFile {
 	}
 	
 	beginBlockComment(matchingText) {
-		//term.trace('beginBlockComment ' + term.yellow(matchingText));
 		this.emitText(matchingText);
 		this.isInsideBlockComment = true;
 	}
 	
 	endBlockComment(matchingText) {
-		//term.trace('endBlockComment ' + term.yellow(matchingText));
 		this.emitText(matchingText);
 		this.isInsideBlockComment = false;
 	}
 	
 	leadingComment(matchingText) {
-		//term.trace('leadingComment ' + term.yellow(matchingText));
 		this.emitText(matchingText);
 	}
 	
 	terminalComment(matchingText) {
 		var actualComment = matchingText.substr(1);	// remove the look-behind
-		//term.trace('terminalComment ' + term.yellow(actualComment));
 		this.emitText(matchingText);
 	}
 }

@@ -85,7 +85,7 @@ var TextReader = require('joezone').TextReader;
 //
 //=============================================================================
 
-class terminal {
+class Terminal {
 
 	static gray(str)	{ return `\x1b[90m${str}\x1b[0m`; }
 	static red(str)		{ return `\x1b[91m${str}\x1b[0m`; }
@@ -97,20 +97,75 @@ class terminal {
 	static white(str)	{ return `\x1b[97m${str}\x1b[0m`; }
 
 	static trace(...params) {
-		process.stderr.write(terminal.gray('   [TRACE] ') + params.join('') + '\n');
+		Terminal.write(Terminal.gray(  '   [TRACE] '), params.join(''));
+	}
+	
+	static invalid(...params) {
+		Terminal.write(Terminal.yellow(' [INVALID] '), params.join(''));
 	}
 	
 	static warning(...params) {
-		process.stderr.write(terminal.gray(' [WARNING] ') + params.join('') + '\n');
+		Terminal.write(Terminal.yellow(' [WARNING] '), params.join(''));
 	}
 	
 	static abnormal(...params) {
-		process.stderr.write( terminal.red('[ABNORMAL] ') + params.join('') + '\n');
+		Terminal.write(Terminal.red(   '[ABNORMAL] ') + Terminal.getFunctionName(4), params.join(''));
 	}
 	
 	static logic(...params) {
-		process.stderr.write( terminal.red('   [LOGIC] ') + params.join('') + '\n');
+		Terminal.write(Terminal.red(   '   [LOGIC] ') + Terminal.getFunctionName(4), params.join(''));
 	}
+	
+	static setProcessName(name) {
+		Object.defineProperty(Terminal, 'processName', { value: name, writable: true});
+	}
+	
+	static getProcessName() {
+		return (Terminal.processName == undefined) ? '' : Terminal.gray(Terminal.processName);
+	}
+
+	static write(tag, message) {
+		Terminal.writeToConsoleOrStderr(Terminal.getProcessName() + tag + message + '\n');
+	}
+	
+	//^ Send message to browser console or CLI stderr
+	writeToConsoleOrStderr(message) {
+		if (typeof console == 'object' && typeof console.warn == 'function')
+			console.warn(message);
+		else if (typeof process == 'object' && typeof process.stderr == 'object' && typeof process.stderr.write == 'function')
+			process.stderr.write(message);
+		else
+			throw new Error(message);
+	}
+
+	//^ Take a snapshot of the stack and return
+    //< {className.memberName}
+	static getFunctionName(depth) {
+		// create an Error object, but don't throw it
+		var stackTraceLine = (new Error).stack.split("\n")[depth];
+		
+		// extract the classname and member name from the backtrace (assuming the backtrace pattern adopted by "node")
+		var regex1 = /at (.*) ?\(/g;
+		var matches = regex1.exec(stackTraceLine);
+		var desiredOutput = '';
+		if (matches == null)
+			return stackTraceLine;
+		if (matches.length > 1)
+			desiredOutput += matches[1].trim();
+		desiredOutput = Terminal.rightAlign(desiredOutput, 30);
+		return `{${desiredOutput}} `;
+	}
+
+	// Can't use Text.rightAlign because it results in a circular require
+	//^ Right align the given string to fit within a fixed width character column
+    static rightAlign(s, width) {
+    	var columnLen = width;
+    	var stringLen = s.length;
+    	if (stringLen > columnLen)
+    		return s.substr(0,columnLen-3) + '...';
+    	else
+    		return ' '.repeat(columnLen+1 - stringLen) + s;
+    }
 }
 
 
@@ -132,7 +187,7 @@ class DefsFile {
 			return;
 		
 		if (!defsPfile.exists()) {
-			term.abnormal(`--defs file not found ${defsPfile.name}`);
+			terminal.abnormal(`--defs file not found ${defsPfile.name}`);
 			return;
 		}
 		
@@ -145,7 +200,7 @@ class DefsFile {
 			tr.close();
 		}
 		catch(err) {
-			term.abnormal(err.message);
+			terminal.abnormal(err.message);
 		}
 	}
 	
@@ -184,7 +239,7 @@ class DefsFile {
 		regexp = new RegExp(this.patterns.define, 'g');
 		result = regexp.exec(line);
 		if (result == null) {
-			term.abnormal('Unhandled item in --defs file ', term.red(line));
+			terminal.abnormal('Unhandled item in --defs file ', terminal.red(line));
 			return [null, null];
 		}
 
@@ -198,7 +253,7 @@ class DefsFile {
 			return (match2 == '') ? [match3, ''] : [match2, match3];
 		}
 		
-		term.logic('Expected to find #define in ', term.red(line));
+		terminal.logic('Expected to find #define in ', terminal.red(line));
 		return [null, null];
 	}
 }
@@ -297,7 +352,7 @@ class SourceFile {
 			tw.close();
 		}
 		catch(err) {
-			term.abnormal(err.message);
+			terminal.abnormal(err.message);
 		}
 	}
 	
@@ -326,10 +381,7 @@ class SourceFile {
 		var regularText = line.substr(this.emitIndex);
 		this.emitText(regularText);
 
-		//term.trace(term.blue(line));
-		var outputLine = this.emitPieces.join('');
-		//term.trace(term.red('['), term.green(outputLine), term.red(']'));
-		return outputLine;
+		return this.emitPieces.join('');
 	}
 	
 	//> line is the full line
@@ -463,7 +515,7 @@ class SourceFile {
 		// pop the LIFO stack
 		var stackItem = this.conditionalStack.pop();
 		if (defName != stackItem.defName) {
-			term.abnormal('Mismatched conditional mark: opening name was ', term.red(stackItem.defName), ' but closing name is ', term.red(defName));
+			terminal.abnormal('Mismatched conditional mark: opening name was ', terminal.red(stackItem.defName), ' but closing name is ', terminal.red(defName));
 		}
 
 		// emit any whitespace that occurred before or after the !DEFNAME>>
@@ -507,7 +559,7 @@ class SourceFile {
 		// pop the LIFO stack
 		var stackItem = this.conditionalStack.pop();
 		if (defName != stackItem.defName) {
-			term.abnormal('Mismatched conditional mark: opening name was ', term.red(stackItem.defName), ' but closing name is ', term.red(defName));
+			terminal.abnormal('Mismatched conditional mark: opening name was ', terminal.red(stackItem.defName), ' but closing name is ', terminal.red(defName));
 		}
 
 		// emit any whitespace that occurred before or after the DEFNAME>>
@@ -524,7 +576,6 @@ class SourceFile {
 		}
 
 		var defName = matchingText.replace('<', '').replace('>', '');
-		//term.trace('substitutionVariable ' + term.yellow(defName));
 		
 		if (this.defsMap.has(defName)) {
 			var defValue = this.defsMap.get(defName);
@@ -535,25 +586,21 @@ class SourceFile {
 	}
 	
 	beginBlockComment(matchingText) {
-		//term.trace('beginBlockComment ' + term.yellow(matchingText));
 		this.emitText(matchingText);
 		this.isInsideBlockComment = true;
 	}
 	
 	endBlockComment(matchingText) {
-		//term.trace('endBlockComment ' + term.yellow(matchingText));
 		this.emitText(matchingText);
 		this.isInsideBlockComment = false;
 	}
 	
 	leadingComment(matchingText) {
-		//term.trace('leadingComment ' + term.yellow(matchingText));
 		this.emitText(matchingText);
 	}
 	
 	terminalComment(matchingText) {
 		var actualComment = matchingText.substr(1);	// remove the look-behind
-		//term.trace('terminalComment ' + term.yellow(actualComment));
 		this.emitText(matchingText);
 	}
 }
