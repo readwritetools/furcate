@@ -1,0 +1,126 @@
+var expect = require('joezone').expect, aver = require('joezone').aver, terminal = require('joezone').terminal, Pfile = require('joezone').Pfile, TextReader = require('joezone').TextReader, TextWriter = require('joezone').TextWriter, Expressions = require('./expressions.class.js');
+
+module.exports = class SourceFile {
+    constructor(e) {
+        expect(e, 'DefsFile'), this.defsFile = e, this.patterns = new Expressions(), this.emitIndex = 0, 
+        this.emitPieces = new Array(), this.isInsideBlockComment = !1, this.conditionalStack = new Array(), 
+        this.suppressLineIfEmpty = !1, Object.seal(this);
+    }
+    get defsMap() {
+        return this.defsFile.defsMap;
+    }
+    isCurrentlyMasking() {
+        var e = this.conditionalStack.length;
+        return 0 != e && this.conditionalStack[e - 1].isMasking;
+    }
+    parse(e, t) {
+        if (expect(e, 'Pfile'), expect(t, 'Pfile'), !e.exists()) return 1;
+        t.makeAbsolute();
+        var i = new Pfile(t.getPath());
+        i.exists() || i.mkDir();
+        try {
+            var s = new TextReader();
+            s.open(e.name);
+            var n = new TextWriter();
+            n.open(t.name);
+            for (var r = ''; null != (r = s.getline()); ) {
+                this.emitIndex = 0, this.emitPieces = new Array();
+                var a = this.parseSourceLine(r);
+                this.isCurrentlyMasking() || this.suppressLineIfEmpty && '' == a.trim() || n.putline(a);
+            }
+            return s.close(), n.close(), 0;
+        } catch (e) {
+            return terminal.abnormal(e.message), 1;
+        }
+    }
+    parseSourceLine(e) {
+        var t = null, i = null;
+        this.suppressLineIfEmpty = !1, t = new RegExp(this.patterns.anything, 'g');
+        for (i = null; null != (i = t.exec(e)); ) {
+            var s = e.substring(this.emitIndex, i.index);
+            this.emitText(s);
+            var n = this.processRegExpMatch(e, i[0], i.index, t.lastIndex);
+            if (!1 !== n) return n;
+        }
+        s = e.substr(this.emitIndex);
+        return this.emitText(s), this.emitPieces.join('');
+    }
+    processRegExpMatch(e, t, i, s) {
+        return this.emitIndex = s, null != new RegExp(this.patterns.negativeOpen, 'g').exec(t) ? (this.negativeOpen(t), 
+        !1) : null != new RegExp(this.patterns.negativeClose, 'g').exec(t) ? (this.negativeClose(t), 
+        !1) : null != new RegExp(this.patterns.affirmativeOpen, 'g').exec(t) ? (this.affirmativeOpen(t), 
+        !1) : null != new RegExp(this.patterns.affirmativeClose, 'g').exec(t) ? (this.affirmativeClose(t), 
+        !1) : null != new RegExp(this.patterns.substitutionVariable, 'g').exec(t) ? (this.substitutionVariable(t, s), 
+        !1) : null != new RegExp(this.patterns.beginBlockComment, 'g').exec(t) ? (this.beginBlockComment(t), 
+        !1) : null != new RegExp(this.patterns.endBlockComment, 'g').exec(t) ? (this.endBlockComment(t), 
+        !1) : null != new RegExp(this.patterns.leadingComment, 'g').exec(t) ? (this.leadingComment(t), 
+        !1) : null != new RegExp(this.patterns.terminalComment, 'g').exec(t) ? (this.terminalComment(t), 
+        this.emitIndex++, !1) : null != new RegExp(this.patterns.define, 'g').exec(t) ? this.define(e) : void 0;
+    }
+    emitText(e) {
+        this.isCurrentlyMasking() || this.emitPieces.push(e);
+    }
+    define(e) {
+        return this.isInsideBlockComment ? e : (this.defsFile.parseLine(e), `// ${e}`);
+    }
+    negativeOpen(e) {
+        if (this.isInsideBlockComment) this.emitText(e); else {
+            var t = e.replace('<<!', '').trim(), i = this.defsMap.has(t), s = !!this.isCurrentlyMasking() || i, n = {
+                defName: t,
+                isMasking: s
+            };
+            this.conditionalStack.push(n);
+            var r = e.replace('<<!' + t, '');
+            this.emitText(r), this.suppressLineIfEmpty = !0;
+        }
+    }
+    negativeClose(e) {
+        if (this.isInsideBlockComment) this.emitText(e); else {
+            var t = e.replace('!', '').replace('>>', '').trim(), i = this.conditionalStack.pop();
+            t != i.defName && terminal.abnormal('Mismatched conditional mark: opening name was ', terminal.red(i.defName), ' but closing name is ', terminal.red(t));
+            var s = e.replace('!' + t + '>>', '');
+            this.emitText(s), this.suppressLineIfEmpty = !0;
+        }
+    }
+    affirmativeOpen(e) {
+        if (this.isInsideBlockComment) this.emitText(e); else {
+            var t = e.replace('<<', '').trim(), i = this.defsMap.has(t), s = !!this.isCurrentlyMasking() || !i, n = {
+                defName: t,
+                isMasking: s
+            };
+            this.conditionalStack.push(n);
+            var r = e.replace('<<' + t, '');
+            this.emitText(r), this.suppressLineIfEmpty = !0;
+        }
+    }
+    affirmativeClose(e) {
+        if (this.isInsideBlockComment) this.emitText(e); else {
+            var t = e.replace('>>', '').trim(), i = this.conditionalStack.pop();
+            t != i.defName && terminal.abnormal('Mismatched conditional mark: opening name was ', terminal.red(i.defName), ' but closing name is ', terminal.red(t));
+            var s = e.replace(t + '>>', '');
+            this.emitText(s), this.suppressLineIfEmpty = !0;
+        }
+    }
+    substitutionVariable(e, t) {
+        if (this.isInsideBlockComment) this.emitText(e); else {
+            var i = e.replace('<', '').replace('>', '');
+            if (this.defsMap.has(i)) {
+                var s = this.defsMap.get(i);
+                this.emitText(s);
+            } else this.emitText(e);
+        }
+    }
+    beginBlockComment(e) {
+        this.emitText(e), this.isInsideBlockComment = !0;
+    }
+    endBlockComment(e) {
+        this.emitText(e), this.isInsideBlockComment = !1;
+    }
+    leadingComment(e) {
+        this.emitText(e);
+    }
+    terminalComment(e) {
+        e.substr(1);
+        this.emitText(e);
+    }
+};
