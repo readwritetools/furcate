@@ -1,0 +1,18 @@
+#!/usr/bin/env node
+//=============================================================================
+//
+// File:         furcate/src/eximjs
+// Language:     ECMAScript 2015
+// Copyright:    Joe Honton © 2018
+// License:      CC-BY-NC-ND 4.0
+// Initial date: Jan 11, 2018
+// Usage:        main entry point
+//
+//=============================================================================
+
+var CLI = require('../dist/cli.class.js');
+var cli = new CLI();
+
+// Read the command line and execute
+if (cli.validateOptions())
+	cli.execute();

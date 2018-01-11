@@ -1,6 +1,6 @@
 //=============================================================================
 //
-// File:         bifurcate/src/expressions.class.js
+// File:         furcate/src/expressions.class.js
 // Language:     ECMAScript 2015
 // Copyright:    Joe Honton © 2018
 // License:      CC-BY-NC-ND 4.0

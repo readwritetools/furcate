@@ -1,6 +1,6 @@
 //=============================================================================
 //
-// File:         bifurcate/src/defs-file.class.js
+// File:         furcate/src/defs-file.class.js
 // Language:     ECMAScript 2015
 // Copyright:    Joe Honton © 2018
 // License:      CC-BY-NC-ND 4.0
@@ -11,9 +11,9 @@
 
 var expect = require('joezone').expect;
 var aver = require('joezone').aver;
+var terminal = require('joezone').terminal;
 var Pfile = require('joezone').Pfile;
 var TextReader = require('joezone').TextReader;
-var terminal = require('./terminal.class.js');
 var Expressions = require('./expressions.class.js');
 
 module.exports = class DefsFile {

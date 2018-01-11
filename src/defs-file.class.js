@@ -1,6 +1,6 @@
 //=============================================================================
 //
-// File:         bifurcate/src/defs-file.class.js
+// File:         furcate/src/defs-file.class.js
 // Language:     ECMAScript 2015
 // Copyright:    Joe Honton © 2018
 // License:      CC-BY-NC-ND 4.0
@@ -11,9 +11,9 @@
 
 import {expect}			from 'joezone';
 import {aver}			from 'joezone';
+import {terminal}		from 'joezone';
 import {Pfile}			from 'joezone';
 import {TextReader}		from 'joezone';
-import terminal			from './terminal.class';
 import Expressions		from './expressions.class';
 
 export default class DefsFile {

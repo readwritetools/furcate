@@ -1,20 +1,20 @@
 //=============================================================================
 //
-// File:         bifurcate/src/source-file.class.js
+// File:         furcate/src/source-file.class.js
 // Language:     ECMAScript 2015
 // Copyright:    Joe Honton © 2018
 // License:      CC-BY-NC-ND 4.0
 // Initial date: Jan 3, 2018
-// Usage:       Parse the source file replacing defs and conditinally including/excluding blocks
+// Usage:        Parse the source file replacing defs and conditinally including/excluding blocks
 //
 //=============================================================================
 
 import {expect}			from 'joezone';
 import {aver}			from 'joezone';
+import {terminal}		from 'joezone';
 import {Pfile}			from 'joezone';
 import {TextReader}		from 'joezone';
 import {TextWriter}		from 'joezone';
-import terminal			from './terminal.class';
 import Expressions		from './expressions.class';
 
 export default class SourceFile {
@@ -57,12 +57,13 @@ export default class SourceFile {
 	// Read a defs file and build a map of defNames => defValues
 	//> inputPfile is the source file to read and parse
 	//> outputPfile is the dest file
+	//< returns 0 on sucess and 1 on failure, which is passed to process.ext()
 	parse(inputPfile, outputPfile) {
 		expect(inputPfile, 'Pfile');
 		expect(outputPfile, 'Pfile');
 		
 		if (!inputPfile.exists())
-			return;
+			return 1;
 		
 		outputPfile.makeAbsolute();
 		var outputPath = new Pfile(outputPfile.getPath());
@@ -91,9 +92,11 @@ export default class SourceFile {
 		
 			tr.close();
 			tw.close();
+			return 0;
 		}
 		catch(err) {
 			terminal.abnormal(err.message);
+			return 1;
 		}
 	}
 	

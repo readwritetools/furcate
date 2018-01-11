@@ -11,7 +11,7 @@
 //@common
 var Pfile = require('joezone').Pfile;
 var Diff = require('joezone').Diff;
-var Main = require('../../../dbg/main.class.js');
+var Main = require('../../../dbg/cli.class.js');
 var FS = require('fs');
 
 var action;
@@ -22,15 +22,15 @@ var results;
 
 var runTest = function(input, expected) {
 
-	var fixturePath = './test/fixtures/';
-	var outputPath = './test/output/';
+	var fixturePath = '../test/fixtures/';
+	var outputPath = '../test/output/';
 	var pfInput = new Pfile(`${fixturePath}${input}`);
 	var pfExpected = new Pfile(`${fixturePath}${expected}`).makeAbsolute();
 	var pfActual = new Pfile(`${outputPath}${expected}`);
 	var pfDefsFile = new Pfile(`${fixturePath}defines.def`);
 	
-	var main = new Main();
-	main.api(pfInput.name, pfActual.name, pfDefsFile.name);
+	var cli = new CLI();
+	cli.testApi(pfInput.name, pfActual.name, pfDefsFile.name);
 		
 	var diff = new Diff('\x1b[41m', '\x1b[0m', '\x1b[42m', '\x1b[0m');  // red/green console
 	var results = diff.diffFiles(pfExpected, pfActual);

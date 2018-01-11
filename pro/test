@@ -1,0 +1,39 @@
+!blue 2.0
+//=============================================================================
+//
+// File:         furcate/pro/test
+// Language:     prorenata script
+// Copyright:    Joe Honton © 2018
+// License:      CC-BY-NC-ND 4.0
+// Initial date: Jan 8, 2018
+// Contents:     Convert ES6 import/export syntax to require/module syntax (test cases)
+//               then run bequiesce test cases
+//
+//=============================================================================
+
+template {
+	eximjs    eximjs <source> <dest>
+	bequiesce bequiesce <source>
+}
+
+// ---------- rewrite export/import (test) ---------- 
+recurse {
+	source    '../test/cases/src'
+	dest      '../test/cases/dbg'
+	include   '*.test.js'
+	overwrite older
+	exec      eximjs
+}
+
+// ---------- run test cases ---------- 
+recurse {
+	source    '../test/cases/dbg'
+	include   '*.test.js'
+	exec      bequiesce
+}
+
+// ---------- look for cruft in dbg compared to original src ---------- 
+compare {
+	source    '../test/cases/dbg'
+	dest      '../test/cases/src'
+}
