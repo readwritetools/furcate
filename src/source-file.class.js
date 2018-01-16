@@ -73,9 +73,11 @@ export default class SourceFile {
 		try {
 			var tr = new TextReader();
 			tr.open(inputPfile.name);
-
+			// terminal.trace(`Reading source file ${inputPfile.name}`);
+			
 			var tw = new TextWriter();
 			tw.open(outputPfile.name);
+			// terminal.trace(`Writing output file ${outputPfile.name}`);
 			
 			var line = '';
 			while ((line = tr.getline()) != null) {

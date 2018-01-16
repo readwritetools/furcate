@@ -37,6 +37,7 @@ module.exports = class DefsFile {
 			terminal.abnormal(`--defs file not found ${defsPfile.name}`);
 			return;
 		}
+		// terminal.trace(`Reading defs from ${defsPfile.name}`);
 		
 		try {
 			var tr = new TextReader();

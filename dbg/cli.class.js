@@ -61,7 +61,7 @@ module.exports = class CLI {
 	    	}
 	    	
 	    	if (arg.indexOf('--defs') == 0) {
-	    		this.definesPfile = new Pfile(arg.substr(6));
+	    		this.definesPfile = new Pfile(arg.substr(7));
 	    		argv.splice(i, 1);
 	    	}
     	}
@@ -75,6 +75,8 @@ module.exports = class CLI {
     	
     	if (argv[3].constructor.name == 'String')
     		this.outputPfile = new Pfile(argv[3]);
+    	
+    	return true;
     }
     
     usageAndExit() {
