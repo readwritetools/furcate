@@ -16,6 +16,7 @@ var Pfile = require('joezone').Pfile;
 var TextReader = require('joezone').TextReader;
 var TextWriter = require('joezone').TextWriter;
 var Expressions = require('./expressions.class.js');
+var fs = require('fs');
 
 module.exports = class SourceFile {
 
@@ -70,13 +71,16 @@ module.exports = class SourceFile {
 		if (!outputPath.exists())
 			outputPath.mkDir();
 		
+		// use temp file for buffering output, in case the input and output are the same name
+		var tempPfile = new Pfile(outputPfile);
+
 		try {
 			var tr = new TextReader();
 			tr.open(inputPfile.name);
 			// terminal.trace(`Reading source file ${inputPfile.name}`);
 			
 			var tw = new TextWriter();
-			tw.open(outputPfile.name);
+			tw.open(tempPfile.name);
 			// terminal.trace(`Writing output file ${outputPfile.name}`);
 			
 			var line = '';
@@ -94,6 +98,10 @@ module.exports = class SourceFile {
 		
 			tr.close();
 			tw.close();
+			
+			// rename temp to final filename
+			fs.renameSync(tempPfile.name, outputPfile.name);
+			
 			return 0;
 		}
 		catch(err) {

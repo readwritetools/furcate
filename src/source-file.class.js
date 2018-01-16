@@ -16,6 +16,7 @@ import {Pfile}			from 'joezone';
 import {TextReader}		from 'joezone';
 import {TextWriter}		from 'joezone';
 import Expressions		from './expressions.class';
+import fs				from 'fs';
 
 export default class SourceFile {
 
@@ -70,13 +71,16 @@ export default class SourceFile {
 		if (!outputPath.exists())
 			outputPath.mkDir();
 		
+		// use temp file for buffering output, in case the input and output are the same name
+		var tempPfile = new Pfile(outputPfile);
+
 		try {
 			var tr = new TextReader();
 			tr.open(inputPfile.name);
 			// terminal.trace(`Reading source file ${inputPfile.name}`);
 			
 			var tw = new TextWriter();
-			tw.open(outputPfile.name);
+			tw.open(tempPfile.name);
 			// terminal.trace(`Writing output file ${outputPfile.name}`);
 			
 			var line = '';
@@ -94,6 +98,10 @@ export default class SourceFile {
 		
 			tr.close();
 			tw.close();
+			
+			// rename temp to final filename
+			fs.renameSync(tempPfile.name, outputPfile.name);
+			
 			return 0;
 		}
 		catch(err) {
