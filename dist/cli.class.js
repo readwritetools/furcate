@@ -22,10 +22,10 @@ module.exports = class CLI {
               case '--help':
                 return this.exit(this.listHelp()), !1;
             }
-            0 == i.indexOf('--defs') && (this.definesPfile = new Pfile(i.substr(6)), e.splice(s, 1));
+            0 == i.indexOf('--defs') && (this.definesPfile = new Pfile(i.substr(7)), e.splice(s, 1));
         }
-        4 != e.length && this.usageAndExit(), 'String' == e[2].constructor.name && (this.inputPfile = new Pfile(e[2])), 
-        'String' == e[3].constructor.name && (this.outputPfile = new Pfile(e[3]));
+        return 4 != e.length && this.usageAndExit(), 'String' == e[2].constructor.name && (this.inputPfile = new Pfile(e[2])), 
+        'String' == e[3].constructor.name && (this.outputPfile = new Pfile(e[3])), !0;
     }
     usageAndExit() {
         var e = [];
