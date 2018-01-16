@@ -13,17 +13,17 @@ export default class  Expressions {
 
 	constructor() {		
 		// careful: JS needs solidus to be escaped so '\\s' becomes '\s'
-		this.define = '(#define\\s*)';									// #define
-		this.valuedDefine = '(#define\\s*)([$_A-Za-z0-9]*?\\s)(.*)';	// #define RWDOC value
-		this.negativeOpen = '(<<![$_A-Za-z0-9]*?(?![$_A-Za-z0-9]))';	// <<!$RW_DOC
-		this.negativeClose = '((?:\\s|^)![$_A-Za-z0-9]*>>)';			// !$RW_DOC>>
-		this.affirmativeOpen = '(<<[$_A-Za-z0-9]*?(?![$_A-Za-z0-9]))';	// <<$RW_DOC
-		this.affirmativeClose = '((?:\\s|^)[$_A-Za-z0-9]*>>)';			// $RW_DOC>>
-		this.substitutionVariable = '(<[$_A-Za-z0-9]*?>)';				// <$RW_DOC>
-		this.beginBlockComment = '(\\/\\*)';							// /*
-		this.endBlockComment = '(\\*\\/)';								// */
-		this.leadingComment = '(^\\/\\/.*)';							// terminal comment at beginning of line  
-		this.terminalComment = '(?:[^:])(\\/\\/.*)';					// ignores http://    (also be sure to add 1 to get the intended index of the match)  
+		this.define = '(#define\\s*)';										// #define
+		this.valuedDefine = '(#define\\s*)([\\-$_A-Za-z0-9]*?\\s)(.*)';		// #define $R-W_DOC value
+		this.negativeOpen = '(<<![\\-$_A-Za-z0-9]*?(?![\\-$_A-Za-z0-9]))';	// <<!$R-W_DOC
+		this.negativeClose = '((?:\\s|^)![\\-$_A-Za-z0-9]*>>)';				// !$R-W_DOC>>
+		this.affirmativeOpen = '(<<[\\-$_A-Za-z0-9]*?(?![\\-$_A-Za-z0-9]))';// <<$R-W_DOC
+		this.affirmativeClose = '((?:\\s|^)[\\-$_A-Za-z0-9]*>>)';			// $R-W_DOC>>
+		this.substitutionVariable = '(<[\\-$_A-Za-z0-9]*?>)';				// <$R-W_DOC>
+		this.beginBlockComment = '(\\/\\*)';								// /*
+		this.endBlockComment = '(\\*\\/)';									// */
+		this.leadingComment = '(^\\/\\/.*)';								// terminal comment at beginning of line  
+		this.terminalComment = '(?:[^:])(\\/\\/.*)';						// ignores http://    (also be sure to add 1 to get the intended index of the match)  
 		this.anything = this.makeAnything();
 		Object.seal(this);
 	}

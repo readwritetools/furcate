@@ -110,7 +110,7 @@ module.exports = class CLI {
 		s.push("        substitutions, and comments.");
 		s.push("");
 		s.push("definition        := '#define' defName defValue");
-		s.push("defName           := [A-Z] | [a-z] | [0-9] | '-' | '_'"); 
+		s.push("defName           := [A-Z] | [a-z] | [0-9] | '$' |'-' | '_'"); 
 		s.push("defValue          := unicode-text");
 		s.push("");
 		s.push("begin affirmative := '<<' defName");
