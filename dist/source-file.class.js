@@ -18,7 +18,7 @@ module.exports = class SourceFile {
         t.makeAbsolute();
         var i = new Pfile(t.getPath());
         i.exists() || i.mkDir();
-        var s = new Pfile(t);
+        var s = new Pfile(t).replaceExtension('tmp');
         try {
             var n = new TextReader();
             n.open(e.name);
