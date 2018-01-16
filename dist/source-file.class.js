@@ -1,4 +1,4 @@
-var expect = require('joezone').expect, aver = require('joezone').aver, terminal = require('joezone').terminal, Pfile = require('joezone').Pfile, TextReader = require('joezone').TextReader, TextWriter = require('joezone').TextWriter, Expressions = require('./expressions.class.js');
+var expect = require('joezone').expect, aver = require('joezone').aver, terminal = require('joezone').terminal, Pfile = require('joezone').Pfile, TextReader = require('joezone').TextReader, TextWriter = require('joezone').TextWriter, Expressions = require('./expressions.class.js'), fs = require('fs');
 
 module.exports = class SourceFile {
     constructor(e) {
@@ -18,17 +18,18 @@ module.exports = class SourceFile {
         t.makeAbsolute();
         var i = new Pfile(t.getPath());
         i.exists() || i.mkDir();
+        var s = new Pfile(t);
         try {
-            var s = new TextReader();
-            s.open(e.name);
-            var n = new TextWriter();
-            n.open(t.name);
-            for (var r = ''; null != (r = s.getline()); ) {
+            var n = new TextReader();
+            n.open(e.name);
+            var r = new TextWriter();
+            r.open(s.name);
+            for (var a = ''; null != (a = n.getline()); ) {
                 this.emitIndex = 0, this.emitPieces = new Array();
-                var a = this.parseSourceLine(r);
-                this.isCurrentlyMasking() || this.suppressLineIfEmpty && '' == a.trim() || n.putline(a);
+                var l = this.parseSourceLine(a);
+                this.isCurrentlyMasking() || this.suppressLineIfEmpty && '' == l.trim() || r.putline(l);
             }
-            return s.close(), n.close(), 0;
+            return n.close(), r.close(), fs.renameSync(s.name, t.name), 0;
         } catch (e) {
             return terminal.abnormal(e.message), 1;
         }
