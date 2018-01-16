@@ -72,7 +72,7 @@ export default class SourceFile {
 			outputPath.mkDir();
 		
 		// use temp file for buffering output, in case the input and output are the same name
-		var tempPfile = new Pfile(outputPfile);
+		var tempPfile = new Pfile(outputPfile).replaceExtension('tmp');
 
 		try {
 			var tr = new TextReader();
