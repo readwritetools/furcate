@@ -1,9 +1,9 @@
 module.exports = class Expressions {
     constructor() {
-        this.define = '(#define\\s*)', this.valuedDefine = '(#define\\s*)([$_A-Za-z0-9]*?\\s)(.*)', 
-        this.negativeOpen = '(<<![$_A-Za-z0-9]*?(?![$_A-Za-z0-9]))', this.negativeClose = '((?:\\s|^)![$_A-Za-z0-9]*>>)', 
-        this.affirmativeOpen = '(<<[$_A-Za-z0-9]*?(?![$_A-Za-z0-9]))', this.affirmativeClose = '((?:\\s|^)[$_A-Za-z0-9]*>>)', 
-        this.substitutionVariable = '(<[$_A-Za-z0-9]*?>)', this.beginBlockComment = '(\\/\\*)', 
+        this.define = '(#define\\s*)', this.valuedDefine = '(#define\\s*)([\\-$_A-Za-z0-9]*?\\s)(.*)', 
+        this.negativeOpen = '(<<![\\-$_A-Za-z0-9]*?(?![\\-$_A-Za-z0-9]))', this.negativeClose = '((?:\\s|^)![\\-$_A-Za-z0-9]*>>)', 
+        this.affirmativeOpen = '(<<[\\-$_A-Za-z0-9]*?(?![\\-$_A-Za-z0-9]))', this.affirmativeClose = '((?:\\s|^)[\\-$_A-Za-z0-9]*>>)', 
+        this.substitutionVariable = '(<[\\-$_A-Za-z0-9]*?>)', this.beginBlockComment = '(\\/\\*)', 
         this.endBlockComment = '(\\*\\/)', this.leadingComment = '(^\\/\\/.*)', this.terminalComment = '(?:[^:])(\\/\\/.*)', 
         this.anything = this.makeAnything(), Object.seal(this);
     }
