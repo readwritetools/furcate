@@ -242,8 +242,10 @@ export default class SourceFile {
 		}
 		
 		var defName = matchingText.replace('<<!', '').trim();
-		if (this.defsMap.has(defName) == false)
+		if (this.defsMap.has(defName) == false) {
+			this.emitText(matchingText);
 			return;
+		}
 
 		// Add an item to the LIFO stack
 		// if we are currently in masking mode, the new item must honor than, so it will also be masking
@@ -267,8 +269,10 @@ export default class SourceFile {
 		}
 		
 		var defName = matchingText.replace('!', '').replace('>>', '').trim();
-		if (this.defsMap.has(defName) == false)
+		if (this.defsMap.has(defName) == false) {
+			this.emitText(matchingText);
 			return;
+		}
 
 		// pop the LIFO stack
 		var stackItem = this.conditionalStack.pop();
@@ -290,8 +294,10 @@ export default class SourceFile {
 		}
 		
 		var defName = matchingText.replace('<<', '').trim();
-		if (this.defsMap.has(defName) == false)
+		if (this.defsMap.has(defName) == false) {
+			this.emitText(matchingText);
 			return;
+		}
 		
 		// Add an item to the LIFO stack
 		// if we are currently in masking mode, the new item must honor that, so it will also be masking
@@ -315,8 +321,10 @@ export default class SourceFile {
 		}
 		
 		var defName = matchingText.replace('>>', '').trim();
-		if (this.defsMap.has(defName) == false)
+		if (this.defsMap.has(defName) == false) {
+			this.emitText(matchingText);
 			return;
+		}
 		
 		// pop the LIFO stack
 		var stackItem = this.conditionalStack.pop();

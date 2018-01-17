@@ -48,9 +48,10 @@ var runTest = function(input, expected) {
 results = runTest(input, expected);
 
 //@testing code
-input='affirmatives.source.js';		expected='affirmatives.dest.js';					;; results == ''
-input='negatives.source.js';		expected='negatives.dest.js';						;; results == ''
-input='block-comments.source.js';	expected='block-comments.dest.js';					;; results == ''
-input='defnames.source.js';			expected='defnames.dest.js';						;; results == ''
-input='substitutions.source.js';	expected='substitutions.dest.js';					;; results == ''
-input='nested.source.js';			expected='nested.dest.js';							;; results == ''
+input='affirmatives.source.js';			expected='affirmatives.dest.js';					;; results == ''
+input='negatives.source.js';			expected='negatives.dest.js';						;; results == ''
+input='block-comments.source.js';		expected='block-comments.dest.js';					;; results == ''
+input='defnames.source.js';				expected='defnames.dest.js';						;; results == ''
+input='substitutions.source.js';		expected='substitutions.dest.js';					;; results == ''
+input='nested.source.js';				expected='nested.dest.js';							;; results == ''
+input='subordinate-phrase.source.blue';	expected='subordinate-phrase.dest.blue';			;; results == ''

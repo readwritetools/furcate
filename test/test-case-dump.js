@@ -411,9 +411,11 @@ class SourceFile {
 		}
 		
 		var defName = matchingText.replace('<<!', '').trim();
-		if (this.defsMap.has(defName) == false)
+		if (this.defsMap.has(defName) == false) {
+			this.emitText(matchingText);
 			return;
-		terminal.trace('AA',def,  this.defsMap.get(defName));
+		}
+
 		// Add an item to the LIFO stack
 		// if we are currently in masking mode, the new item must honor than, so it will also be masking
 		// if we are not currently masking, set to true if the defName does not exist, false if it does exist.
@@ -436,8 +438,10 @@ class SourceFile {
 		}
 		
 		var defName = matchingText.replace('!', '').replace('>>', '').trim();
-		if (this.defsMap.has(defName) == false)
+		if (this.defsMap.has(defName) == false) {
+			this.emitText(matchingText);
 			return;
+		}
 
 		// pop the LIFO stack
 		var stackItem = this.conditionalStack.pop();
@@ -459,8 +463,10 @@ class SourceFile {
 		}
 		
 		var defName = matchingText.replace('<<', '').trim();
-		if (this.defsMap.has(defName) == false)
+		if (this.defsMap.has(defName) == false) {
+			this.emitText(matchingText);
 			return;
+		}
 		
 		// Add an item to the LIFO stack
 		// if we are currently in masking mode, the new item must honor that, so it will also be masking
@@ -484,8 +490,10 @@ class SourceFile {
 		}
 		
 		var defName = matchingText.replace('>>', '').trim();
-		if (this.defsMap.has(defName) == false)
+		if (this.defsMap.has(defName) == false) {
+			this.emitText(matchingText);
 			return;
+		}
 		
 		// pop the LIFO stack
 		var stackItem = this.conditionalStack.pop();
@@ -543,7 +551,7 @@ class SourceFile {
 	}
 	
 	isTrue(text) {
-		return !this.isFalse();
+		return !this.isFalse(text);
 	}
 	
 }
@@ -758,6 +766,6 @@ var runTest = function(input, expected) {
 		FS.unlinkSync(pfActual.name);
 	return results;
 }
-input='nested.source.js';			expected='nested.dest.js';
+input='subordinate-phrase.source.blue';	expected='subordinate-phrase.dest.blue';
 results = runTest(input, expected);
 global.__b = (results == '');
