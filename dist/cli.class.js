@@ -46,7 +46,8 @@ module.exports = class CLI {
         var e = [];
         return e.push('Syntax: furcate has definitions, affirmative conditionals, negative contitionals,'), 
         e.push('        substitutions, and comments.'), e.push(''), e.push('definition        := \'#define\' defName defValue'), 
-        e.push('defName           := [A-Z] | [a-z] | [0-9] | \'$\' |\'-\' | \'_\''), e.push('defValue          := unicode-text'), 
+        e.push('defName           := [A-Z] | [a-z] | [0-9] | \'$\' |\'-\' | \'_\''), e.push('defValue          := boolean | unicode-text'), 
+        e.push('boolean           := 0 | false | False | FALSE | 1 | true | True | TRUE'), 
         e.push(''), e.push('begin affirmative := \'<<\' defName'), e.push('end affirmative   := defName \'>>\''), 
         e.push('begin negative    := \'<<!\' defName'), e.push('end negative      := \'!\' defName \'>>\''), 
         e.push(''), e.push('substitution      := \'<\' defName \'>\''), e.push(''), e.push('terminal-comment  := \'//\' unicode-text'), 

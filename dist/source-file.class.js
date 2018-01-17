@@ -22,14 +22,14 @@ module.exports = class SourceFile {
         try {
             var n = new TextReader();
             n.open(e.name);
-            var r = new TextWriter();
-            r.open(s.name);
-            for (var a = ''; null != (a = n.getline()); ) {
+            var a = new TextWriter();
+            a.open(s.name);
+            for (var r = ''; null != (r = n.getline()); ) {
                 this.emitIndex = 0, this.emitPieces = new Array();
-                var l = this.parseSourceLine(a);
-                this.isCurrentlyMasking() || this.suppressLineIfEmpty && '' == l.trim() || r.putline(l);
+                var l = this.parseSourceLine(r);
+                this.isCurrentlyMasking() || this.suppressLineIfEmpty && '' == l.trim() || a.putline(l);
             }
-            return n.close(), r.close(), fs.renameSync(s.name, t.name), 0;
+            return n.close(), a.close(), fs.renameSync(s.name, t.name), 0;
         } catch (e) {
             return terminal.abnormal(e.message), 1;
         }
@@ -66,40 +66,52 @@ module.exports = class SourceFile {
     }
     negativeOpen(e) {
         if (this.isInsideBlockComment) this.emitText(e); else {
-            var t = e.replace('<<!', '').trim(), i = this.defsMap.has(t), s = !!this.isCurrentlyMasking() || i, n = {
-                defName: t,
-                isMasking: s
-            };
-            this.conditionalStack.push(n);
-            var r = e.replace('<<!' + t, '');
-            this.emitText(r), this.suppressLineIfEmpty = !0;
+            var t = e.replace('<<!', '').trim();
+            if (0 != this.defsMap.has(t)) {
+                var i = this.isTrue(this.defsMap.get(t)), s = !!this.isCurrentlyMasking() || i, n = {
+                    defName: t,
+                    isMasking: s
+                };
+                this.conditionalStack.push(n);
+                var a = e.replace('<<!' + t, '');
+                this.emitText(a), this.suppressLineIfEmpty = !0;
+            }
         }
     }
     negativeClose(e) {
         if (this.isInsideBlockComment) this.emitText(e); else {
-            var t = e.replace('!', '').replace('>>', '').trim(), i = this.conditionalStack.pop();
-            t != i.defName && terminal.abnormal('Mismatched conditional mark: opening name was ', terminal.red(i.defName), ' but closing name is ', terminal.red(t));
-            var s = e.replace('!' + t + '>>', '');
-            this.emitText(s), this.suppressLineIfEmpty = !0;
+            var t = e.replace('!', '').replace('>>', '').trim();
+            if (0 != this.defsMap.has(t)) {
+                var i = this.conditionalStack.pop();
+                t != i.defName && terminal.abnormal('Mismatched conditional mark: opening name was ', terminal.red(i.defName), ' but closing name is ', terminal.red(t));
+                var s = e.replace('!' + t + '>>', '');
+                this.emitText(s), this.suppressLineIfEmpty = !0;
+            }
         }
     }
     affirmativeOpen(e) {
         if (this.isInsideBlockComment) this.emitText(e); else {
-            var t = e.replace('<<', '').trim(), i = this.defsMap.has(t), s = !!this.isCurrentlyMasking() || !i, n = {
-                defName: t,
-                isMasking: s
-            };
-            this.conditionalStack.push(n);
-            var r = e.replace('<<' + t, '');
-            this.emitText(r), this.suppressLineIfEmpty = !0;
+            var t = e.replace('<<', '').trim();
+            if (0 != this.defsMap.has(t)) {
+                var i = this.isFalse(this.defsMap.get(t)), s = !!this.isCurrentlyMasking() || i, n = {
+                    defName: t,
+                    isMasking: s
+                };
+                this.conditionalStack.push(n);
+                var a = e.replace('<<' + t, '');
+                this.emitText(a), this.suppressLineIfEmpty = !0;
+            }
         }
     }
     affirmativeClose(e) {
         if (this.isInsideBlockComment) this.emitText(e); else {
-            var t = e.replace('>>', '').trim(), i = this.conditionalStack.pop();
-            t != i.defName && terminal.abnormal('Mismatched conditional mark: opening name was ', terminal.red(i.defName), ' but closing name is ', terminal.red(t));
-            var s = e.replace(t + '>>', '');
-            this.emitText(s), this.suppressLineIfEmpty = !0;
+            var t = e.replace('>>', '').trim();
+            if (0 != this.defsMap.has(t)) {
+                var i = this.conditionalStack.pop();
+                t != i.defName && terminal.abnormal('Mismatched conditional mark: opening name was ', terminal.red(i.defName), ' but closing name is ', terminal.red(t));
+                var s = e.replace(t + '>>', '');
+                this.emitText(s), this.suppressLineIfEmpty = !0;
+            }
         }
     }
     substitutionVariable(e, t) {
@@ -123,5 +135,11 @@ module.exports = class SourceFile {
     terminalComment(e) {
         e.substr(1);
         this.emitText(e);
+    }
+    isFalse(e) {
+        return '0' == e || 'false' == e || 'False' == e || 'FALSE' == e;
+    }
+    isTrue(e) {
+        return !this.isFalse(e);
     }
 };
