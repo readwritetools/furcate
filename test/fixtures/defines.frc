@@ -10,12 +10,14 @@
 //=============================================================================
   
 // test/fixtures/affirmatives.source.js
-#define AFF1						// define without value
-#define AFF3 affirmative three		// define with value
+#define AFF1						// define without value means 'true', so include
+#define AFF2 false					// boolean 'false', so exclude
+#define AFF3 affirmative three		// define with value means 'true', so include
 
 // test/fixtures/negatives.source.js
-#define NEG1						// define without value
-#define NEG3 negative three			// define with value
+#define NEG1						// define without value means 'true', so exclude
+#define NEG2 false					// boolean 'false', so include
+#define NEG3 negative three			// define with value means 'true', so exclude
 
 // test/fixtures/block-comments.source.js
 #define BCM1

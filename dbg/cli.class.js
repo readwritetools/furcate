@@ -111,7 +111,8 @@ module.exports = class CLI {
 		s.push("");
 		s.push("definition        := '#define' defName defValue");
 		s.push("defName           := [A-Z] | [a-z] | [0-9] | '$' |'-' | '_'"); 
-		s.push("defValue          := unicode-text");
+		s.push("defValue          := boolean | unicode-text");
+		s.push("boolean           := 0 | false | False | FALSE | 1 | true | True | TRUE");
 		s.push("");
 		s.push("begin affirmative := '<<' defName");
 		s.push("end affirmative   := defName '>>'");

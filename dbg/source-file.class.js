@@ -242,12 +242,14 @@ module.exports = class SourceFile {
 		}
 		
 		var defName = matchingText.replace('<<!', '').trim();
-		
+		if (this.defsMap.has(defName) == false)
+			return;
+
 		// Add an item to the LIFO stack
 		// if we are currently in masking mode, the new item must honor than, so it will also be masking
 		// if we are not currently masking, set to true if the defName does not exist, false if it does exist.
-		var defNameExists = this.defsMap.has(defName);
-		var isMasking = (this.isCurrentlyMasking() ? true : defNameExists);
+		var isDefValueTrue = this.isTrue(this.defsMap.get(defName));
+		var isMasking = (this.isCurrentlyMasking() ? true : isDefValueTrue);
 		var stackItem = {defName, isMasking};
 		this.conditionalStack.push(stackItem);
 
@@ -265,6 +267,8 @@ module.exports = class SourceFile {
 		}
 		
 		var defName = matchingText.replace('!', '').replace('>>', '').trim();
+		if (this.defsMap.has(defName) == false)
+			return;
 
 		// pop the LIFO stack
 		var stackItem = this.conditionalStack.pop();
@@ -286,12 +290,14 @@ module.exports = class SourceFile {
 		}
 		
 		var defName = matchingText.replace('<<', '').trim();
+		if (this.defsMap.has(defName) == false)
+			return;
 		
 		// Add an item to the LIFO stack
 		// if we are currently in masking mode, the new item must honor that, so it will also be masking
 		// if we are not currently masking, set to true if the defName exists, false if it doesn't exist.
-		var defNameExists = this.defsMap.has(defName);
-		var isMasking = (this.isCurrentlyMasking() ? true : !defNameExists);
+		var isDefValueFalse = this.isFalse(this.defsMap.get(defName));
+		var isMasking = (this.isCurrentlyMasking() ? true : isDefValueFalse);
 		var stackItem = {defName, isMasking};
 		this.conditionalStack.push(stackItem);
 
@@ -309,6 +315,8 @@ module.exports = class SourceFile {
 		}
 		
 		var defName = matchingText.replace('>>', '').trim();
+		if (this.defsMap.has(defName) == false)
+			return;
 		
 		// pop the LIFO stack
 		var stackItem = this.conditionalStack.pop();
@@ -357,5 +365,17 @@ module.exports = class SourceFile {
 		var actualComment = matchingText.substr(1);	// remove the look-behind
 		this.emitText(matchingText);
 	}
+	
+	isFalse(text) {
+		if (text == '0' || text == 'false' || text == 'False' || text == 'FALSE')
+			return true;
+		else
+			return false;
+	}
+	
+	isTrue(text) {
+		return !this.isFalse(text);
+	}
+	
 }
 

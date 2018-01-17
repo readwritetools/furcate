@@ -27,7 +27,7 @@ var runTest = function(input, expected) {
 	var pfInput = new Pfile(`${fixturePath}${input}`);
 	var pfExpected = new Pfile(`${fixturePath}${expected}`).makeAbsolute();
 	var pfActual = new Pfile(`${outputPath}${expected}`);
-	var pfDefsFile = new Pfile(`${fixturePath}defines.def`);
+	var pfDefsFile = new Pfile(`${fixturePath}defines.frc`);
 	
 	var cli = new CLI();
 	cli.testApi(pfInput.name, pfActual.name, pfDefsFile.name);
