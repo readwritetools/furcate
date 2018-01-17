@@ -75,7 +75,7 @@ module.exports = class SourceFile {
                 this.conditionalStack.push(n);
                 var a = e.replace('<<!' + t, '');
                 this.emitText(a), this.suppressLineIfEmpty = !0;
-            }
+            } else this.emitText(e);
         }
     }
     negativeClose(e) {
@@ -86,7 +86,7 @@ module.exports = class SourceFile {
                 t != i.defName && terminal.abnormal('Mismatched conditional mark: opening name was ', terminal.red(i.defName), ' but closing name is ', terminal.red(t));
                 var s = e.replace('!' + t + '>>', '');
                 this.emitText(s), this.suppressLineIfEmpty = !0;
-            }
+            } else this.emitText(e);
         }
     }
     affirmativeOpen(e) {
@@ -100,7 +100,7 @@ module.exports = class SourceFile {
                 this.conditionalStack.push(n);
                 var a = e.replace('<<' + t, '');
                 this.emitText(a), this.suppressLineIfEmpty = !0;
-            }
+            } else this.emitText(e);
         }
     }
     affirmativeClose(e) {
@@ -111,7 +111,7 @@ module.exports = class SourceFile {
                 t != i.defName && terminal.abnormal('Mismatched conditional mark: opening name was ', terminal.red(i.defName), ' but closing name is ', terminal.red(t));
                 var s = e.replace(t + '>>', '');
                 this.emitText(s), this.suppressLineIfEmpty = !0;
-            }
+            } else this.emitText(e);
         }
     }
     substitutionVariable(e, t) {
