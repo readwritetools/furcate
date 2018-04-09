@@ -6,6 +6,9 @@
   "main": "./dist/main.js",
   "author": "Joe Honton",
   "license": "CC-BY-NC-ND 4.0",
+  "bin": {
+    "furcate": "./bin/furcate"
+  },
   "scripts": {
     "build": "npm run exim && npm run app",
     "exim": "C:/neonave/lib/exim/exim ./src ./dbg main.js",
@@ -20,7 +23,8 @@
   "dependencies": {
     "joezone": "git+ssh://root@nk024:/keep/joezone#*"
   },
-  "bin": {
-    "furcate": "./bin/furcate"
-  }
+  "files": [
+    "bin",
+    "dist"
+  ]
 }
