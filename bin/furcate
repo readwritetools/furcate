@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 //=============================================================================
 //
-// File:         furcate/src/eximjs
+// File:         furcate/bin/furcate
 // Language:     ECMAScript 2015
 // Copyright:    Joe Honton © 2018
 // License:      CC-BY-NC-ND 4.0

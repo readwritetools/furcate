@@ -1,11 +1,14 @@
 {
   "name": "furcate",
-  "version": "1.0.7",
+  "version": "1.0.10",
   "description": "Branches and replaces files using definitions, conditionals, and substitutions",
   "private": true,
   "main": "./dist/main.js",
   "author": "Joe Honton",
   "license": "CC-BY-NC-ND 4.0",
+  "bin": {
+    "furcate": "./bin/furcate"
+  },
   "scripts": {
     "build": "npm run exim && npm run app",
     "exim": "C:/neonave/lib/exim/exim ./src ./dbg main.js",
@@ -18,9 +21,10 @@
     "bump-version": "npm version patch && git push && git push --tags"
   },
   "dependencies": {
-    "joezone": "git+ssh://root@nk021:/keep/joezone#*"
+    "joezone": "git+ssh://root@nk024:/keep/joezone#"
   },
-  "bin": {
-    "furcate": "./bin/furcate"
-  }
+  "files": [
+    "bin",
+    "dist"
+  ]
 }
