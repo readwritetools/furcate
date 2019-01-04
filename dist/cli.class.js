@@ -1,3 +1,4 @@
+/* Copyright (c) 2019 Read Write Tools */
 var expect = require('joezone').expect, terminal = require('joezone').terminal, Pfile = require('joezone').Pfile, DefsFile = require('./defs-file.class.js'), SourceFile = require('./source-file.class.js'), fs = require('fs');
 
 module.exports = class CLI {

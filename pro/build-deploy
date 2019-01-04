@@ -1,19 +1,20 @@
 !blue 2.0
 /*=============================================================================
 //
-// File:         furcate/pro/build
+// File:         furcate/pro/build-deploy
 // Language:     prorenata script
 // Copyright:    Joe Honton © 2018
 // License:      CC-BY-NC-ND 4.0
-// Initial date: Jun 30, 2018
+// Initial date: Jan 22, 2018
 // Contents:     life cycle
 //
 =============================================================================*/
 
 run {
-//	sh renata prepare			// install node module dependencies
+	sh renata prepare			// install node module dependencies
 	sh renata exim				// convert any modified .js         from src --> dbg
-	sh renata test				// bequiesce
-//	sh renata deploy			// minify, bump version, push repo
-//	sh renata installg			// install as global utility
+	sh renata test				// bequiesce tests
+	sh renata finalize			// minify js; copyright; copy files from dbg --> dist
+	sh renata bump				// bump version; push repo
+	sh renata installg			// install as global utility
 }

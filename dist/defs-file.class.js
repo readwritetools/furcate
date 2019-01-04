@@ -1,3 +1,4 @@
+/* Copyright (c) 2019 Read Write Tools */
 var expect = require('joezone').expect, aver = require('joezone').aver, terminal = require('joezone').terminal, Pfile = require('joezone').Pfile, TextReader = require('joezone').TextReader, Expressions = require('./expressions.class.js');
 
 module.exports = class DefsFile {

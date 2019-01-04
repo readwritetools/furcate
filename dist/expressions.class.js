@@ -1,3 +1,4 @@
+/* Copyright (c) 2019 Read Write Tools */
 module.exports = class Expressions {
     constructor() {
         this.define = '(#define\\s*)', this.valuedDefine = '(#define\\s*)([\\-$_A-Za-z0-9]*?\\s)(.*)', 
