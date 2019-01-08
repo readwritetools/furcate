@@ -1,6 +1,6 @@
 {
   "name": "furcate",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Branches and replaces files using definitions, conditionals, and substitutions",
   "private": true,
   "main": "./dist/main.js",
