@@ -11,7 +11,7 @@
 //@common
 var Pfile = require('joezone').Pfile;
 var Diff = require('joezone').Diff;
-var Main = require('../../../dbg/cli.class.js');
+var CLI = require('../../../dbg/cli.class.js');
 var FS = require('fs');
 
 var action;

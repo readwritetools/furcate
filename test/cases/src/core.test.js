@@ -11,7 +11,7 @@
 //@common
 import {Pfile}				from 'joezone';
 import {Diff}				from 'joezone';
-import Main					from '../../../dbg/cli.class.js';
+import CLI					from '../../../dbg/cli.class.js';
 import FS					from 'fs';
 
 var action;
