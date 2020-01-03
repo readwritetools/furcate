@@ -1,28 +1,31 @@
 {
   "name": "furcate",
   "version": "1.0.13",
-  "description": "Branches and replaces files using definitions, conditionals, and substitutions",
-  "private": true,
+  "description": "Preprocessor that branches and replaces files using definitions, conditionals, and substitutions",
+  "author": "Read Write Tools",
+  "license": "MIT",
   "main": "./dist/main.js",
-  "author": "Joe Honton",
-  "license": "CC-BY-NC-ND 4.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/readwritetools/furcate.git"
+  },
   "bin": {
     "furcate": "./bin/furcate"
   },
   "scripts": {
-    "build": "npm run exim && npm run app",
-    "exim": "C:/neonave/lib/exim/exim ./src ./dbg main.js",
-    "app": "node ./bin/bifurcate ./test/fixtures/affirmatives.source.js ./test/output/affirmatives.dest.js --defs=./test/fixtures/defines.def",
-    "app-inspect": "node --inspect-brk=9229 ./bin/bifurcate ./test/fixtures/affirmatives.source.js ./test/output/affirmatives.dest.js --defs=./test/fixtures/defines.def",
-    "test": "npm run exim && npm run exim-tests && npm run bequiesce-core",
-    "exim-tests": "C:/neonave/lib/exim/exim ./test/cases/src ./test/cases/dbg core.test.js",
-    "bequiesce-core": "C:/neonave/lib/bequiesce/bequiesce ./test/cases/dbg/core.test.js",
-    "failed": "node test/test-case-dump.js",
     "bump-version": "npm version patch && git push && git push --tags"
   },
   "dependencies": {
     "joezone": "git+ssh://root@nk024:/keep/joezone#"
   },
+  "keywords": [
+    "cli",
+    "preprocessor"
+  ],
+  "bugs": {
+    "url": "https://github.com/readwritetools/furcate/issues"
+  },
+  "homepage": "https://hub.readwritetools.com/tasks/furcate.blue",
   "files": [
     "bin",
     "dist"

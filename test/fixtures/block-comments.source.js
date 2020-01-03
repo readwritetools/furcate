@@ -2,8 +2,8 @@
 //
 // File:         bifurcate/test/fixtures/block-comments.*.js
 // Language:     ECMAScript 2015
-// Copyright:    Joe Honton © 2018
-// License:      CC-BY-NC-ND 4.0
+// Copyright:    Read Write Tools
+// License:      MIT
 // Initial date: Jan 5, 2018
 // Contents:     block comments
 //

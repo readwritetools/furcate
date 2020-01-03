@@ -2,8 +2,8 @@
 //
 // File:         bifurcate/test/cases/core.test.js
 // Language:     Bequiesce
-// Copyright:    Joe Honton © 2018
-// License:      CC-BY-NC-ND 4.0
+// Copyright:    Read Write Tools
+// License:      MIT
 // Initial date: Jan 5, 2018
 //
 //=============================================================================

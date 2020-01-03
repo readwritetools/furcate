@@ -2,8 +2,8 @@
 //
 // File:         furcate/src/defs-file.class.js
 // Language:     ECMAScript 2015
-// Copyright:    Joe Honton © 2018
-// License:      CC-BY-NC-ND 4.0
+// Copyright:    Read Write Tools
+// License:      MIT
 // Initial date: Jan 3, 2018
 // Usage:       Parse the defs file into a map
 //

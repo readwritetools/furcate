@@ -3,8 +3,8 @@
 //
 // File:         furcate/pro/test
 // Language:     prorenata script
-// Copyright:    Joe Honton © 2018
-// License:      CC-BY-NC-ND 4.0
+// Copyright:    Read Write Tools
+// License:      MIT
 // Initial date: Jan 8, 2018
 // Contents:     Convert ES6 import/export syntax to require/module syntax (test cases)
 //               then run bequiesce test cases

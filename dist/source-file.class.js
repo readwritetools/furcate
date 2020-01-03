@@ -69,13 +69,13 @@ module.exports = class SourceFile {
         if (this.isInsideBlockComment) this.emitText(e); else {
             var t = e.replace('<<!', '').trim();
             if (0 != this.defsMap.has(t)) {
-                var i = this.isTrue(this.defsMap.get(t)), s = !!this.isCurrentlyMasking() || i, n = {
+                var i = this.isTrue(this.defsMap.get(t)), s = {
                     defName: t,
-                    isMasking: s
+                    isMasking: !!this.isCurrentlyMasking() || i
                 };
-                this.conditionalStack.push(n);
-                var a = e.replace('<<!' + t, '');
-                this.emitText(a), this.suppressLineIfEmpty = !0;
+                this.conditionalStack.push(s);
+                var n = e.replace('<<!' + t, '');
+                this.emitText(n), this.suppressLineIfEmpty = !0;
             } else this.emitText(e);
         }
     }
@@ -94,13 +94,13 @@ module.exports = class SourceFile {
         if (this.isInsideBlockComment) this.emitText(e); else {
             var t = e.replace('<<', '').trim();
             if (0 != this.defsMap.has(t)) {
-                var i = this.isFalse(this.defsMap.get(t)), s = !!this.isCurrentlyMasking() || i, n = {
+                var i = this.isFalse(this.defsMap.get(t)), s = {
                     defName: t,
-                    isMasking: s
+                    isMasking: !!this.isCurrentlyMasking() || i
                 };
-                this.conditionalStack.push(n);
-                var a = e.replace('<<' + t, '');
-                this.emitText(a), this.suppressLineIfEmpty = !0;
+                this.conditionalStack.push(s);
+                var n = e.replace('<<' + t, '');
+                this.emitText(n), this.suppressLineIfEmpty = !0;
             } else this.emitText(e);
         }
     }

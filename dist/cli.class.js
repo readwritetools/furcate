@@ -37,8 +37,8 @@ module.exports = class CLI {
     }
     showVersion() {
         try {
-            var e = new Pfile(__dirname).addPath('../package.json').name, i = fs.readFileSync(e, 'utf-8'), s = JSON.parse(i);
-            return `version v${s.version}`;
+            var e = new Pfile(__dirname).addPath('../package.json').name, i = fs.readFileSync(e, 'utf-8');
+            return `version v${JSON.parse(i).version}`;
         } catch (e) {
             return `version unknown ${e.message}`;
         }
