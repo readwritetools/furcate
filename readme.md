@@ -126,7 +126,7 @@ FREE-VERSION>>
 
 The <span>furcate</span> command line utility is licensed under the MIT
 License. It may be cloned from <a href='https://github.com/readwritetools/furcate'>Github</a>
-, or installed via <a href='https://www.npmjs.com/package/rwt-furcate'>NPM</a>
+, or installed via <a href='https://www.npmjs.com/package/furcate'>NPM</a>
 .
 
 <img src='/img/blue-seal-mit.png' width=80 align=right />
