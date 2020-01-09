@@ -20,7 +20,8 @@
   },
   "keywords": [
     "cli",
-    "preprocessor"
+    "preprocessor",
+    "readwritetools"
   ],
   "bugs": {
     "url": "https://github.com/readwritetools/furcate/issues"
