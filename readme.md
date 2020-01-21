@@ -7,7 +7,7 @@
 
 
 <figure>
-	<img src='/img/tasks/furcate/furcate-unsplash-jorge-zapata.jpg' width='100%' />
+	<img src='/img/tasks/furcate/furcate-wikimedia-rosser1954.jpg' width='100%' />
 	<figcaption></figcaption>
 </figure>
 
