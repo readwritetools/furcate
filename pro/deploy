@@ -1,15 +1,23 @@
 !blue 2.0
 /*=============================================================================
 //
-// File:         furcate/pro/bump
+// File:         furcate/pro/deploy
 // Language:     prorenata script
 // Copyright:    Read Write Tools
 // License:      MIT
 // Initial date: Jan 4, 2019
-// Contents:     Bump version, push repo
+// Contents:     check for pending work, commit, bump version, push repo
 //
 =============================================================================*/
 
+
+// ---------- check to make sure repo has no uncommited work ---------- 
+run {
+	sh git add ../
+	sh git commit -m "deploy"
+	sh git push
+	onerror continue
+}
 
 // ---------- bump version and push repo to origin ---------- 
 run {
