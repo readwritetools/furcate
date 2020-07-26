@@ -1,6 +1,6 @@
 {
   "name": "furcate",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "Preprocessor that branches and replaces files using definitions, conditionals, and substitutions",
   "author": "Read Write Tools",
   "license": "MIT",
